@@ -1,0 +1,54 @@
+name: Autograding Tests
+'on':
+  - push
+  - repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+      - name: Setup java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Primitives test
+        id: primitives-test
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Atomic Counter Test
+          setup-command: ''
+          command: mvn test -Dtest=AtomicCounterTest
+          timeout: 10
+          max-score: 40
+      - name: Classes test
+        id: classes-test
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Parallel Stream Test
+          setup-command: ''
+          command: mvn test -Dtest=ParallelStreamProcessingTest
+          timeout: 10
+          max-score: 30
+      - name: Classes test
+        id: classes-test
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Word Frequency Test
+          setup-command: ''
+          command: mvn test -Dtest=WordFrequencyCounterTest
+          timeout: 10
+          max-score: 30
+      - name: Autograding Reporter
+        uses: classroom-resources/autograding-grading-reporter@v1
+        env:
+          PRIMITIVES-TEST_RESULTS: "${{steps.primitives-test.outputs.result}}"
+          CLASSES-TEST_RESULTS: "${{steps.classes-test.outputs.result}}"
+        with:
+          runners: primitives-test,classes-test
