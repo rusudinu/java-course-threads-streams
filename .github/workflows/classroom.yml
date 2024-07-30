@@ -55,4 +55,4 @@ jobs:
           PRIMITIVES-TEST_RESULTS: "${{steps.primitives-test.outputs.result}}"
           CLASSES-TEST_RESULTS: "${{steps.classes-test.outputs.result}}"
         with:
-          runners: atomic-counter-test,parallel-stream-test,word-frequency-test
+          runners: "atomic-counter-test,parallel-stream-test,word-frequency-test"
