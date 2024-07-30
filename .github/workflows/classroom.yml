@@ -18,8 +18,9 @@ jobs:
           distribution: 'temurin'
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Primitives test
-        id: primitives-test
+
+      - name: AtomicCounterTest
+        id: atomic-counter-test
         uses: classroom-resources/autograding-command-grader@v1
         with:
           test-name: Atomic Counter Test
@@ -27,28 +28,31 @@ jobs:
           command: mvn test -Dtest=AtomicCounterTest
           timeout: 10
           max-score: 40
-      - name: Classes test
-        id: classes-test
+
+      - name: ParallelStreamTest
+        id: parallel-stream-test
         uses: classroom-resources/autograding-command-grader@v1
         with:
-          test-name: Parallel Stream Test
+          test-name: ParallelStreamTest
           setup-command: ''
           command: mvn test -Dtest=ParallelStreamProcessingTest
           timeout: 10
           max-score: 30
-      - name: Classes test
-        id: classes-test
+
+      - name: WordFrequencyTest
+        id: word-frequency-test
         uses: classroom-resources/autograding-command-grader@v1
         with:
-          test-name: Word Frequency Test
+          test-name: WordFrequencyTest
           setup-command: ''
           command: mvn test -Dtest=WordFrequencyCounterTest
           timeout: 10
           max-score: 30
+
       - name: Autograding Reporter
         uses: classroom-resources/autograding-grading-reporter@v1
         env:
           PRIMITIVES-TEST_RESULTS: "${{steps.primitives-test.outputs.result}}"
           CLASSES-TEST_RESULTS: "${{steps.classes-test.outputs.result}}"
         with:
-          runners: primitives-test,classes-test
+          runners: atomic-counter-test,parallel-stream-test,word-frequency-test
