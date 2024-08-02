@@ -52,7 +52,8 @@ jobs:
       - name: Autograding Reporter
         uses: classroom-resources/autograding-grading-reporter@v1
         env:
-          PRIMITIVES-TEST_RESULTS: "${{steps.primitives-test.outputs.result}}"
-          CLASSES-TEST_RESULTS: "${{steps.classes-test.outputs.result}}"
+          ATOMIC-COUNTER-TEST_RESULTS: "${{steps.atomic-counter-test.outputs.result}}"
+          PARALLEL-STREAM-TEST_RESULTS: "${{steps.parallel-stream-test.outputs.result}}"
+          WORD-FREQUENCY-TEST_RESULTS: "${{steps.word-frequency-test.outputs.result}}"
         with:
-          runners: "atomic-counter-test,parallel-stream-test,word-frequency-test"
+          runners: atomic-counter-test,parallel-stream-test,word-frequency-test
